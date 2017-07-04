@@ -9,7 +9,16 @@ var GITHUB_TOKEN = process.env.token;
 
 function getRepoContributors(repoOwner, repoName, cb) {
   var requestURL = 'https://'+ GITHUB_USER + ':' + GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors';
-  console.log(requestURL);
+
+  var options = {
+    url: requestURL,
+    headers: {
+      'User-Agent' : 'requestqwer'
+    }
+  }
+  request.get(options, function(error, response, body){
+    console.log(body);
+  });
 }
 
 getRepoContributors("jquery", "jquery", function(err, result) {
