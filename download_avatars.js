@@ -41,9 +41,9 @@ function downloadImageByURL(url, filePath) {
        .pipe(fs.createWriteStream(filePath));
 }
 if(process.argv.length === 4){
-  getRepoContributors(GITHUB_OWNER, GITHUB_REPO, function(info) {
-    for(var x of info){
-      downloadImageByURL(x.avatar_url, x.login);
+  getRepoContributors(GITHUB_OWNER, GITHUB_REPO, function(contributors) {
+    for(var contributor of contributors){
+      downloadImageByURL(contributor.avatar_url, contributor.login);
     }
   });
 }else{
