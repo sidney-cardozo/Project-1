@@ -1,3 +1,5 @@
+//User needs to set the enviroment variables (either in the command line or permanantely in shell)
+
 var request = require('request');
 var fs = require('fs');
 
@@ -5,7 +7,8 @@ console.log('Welcome to the GitHub Avatar Downloader!');
 
 var GITHUB_USER = process.env.user;
 var GITHUB_TOKEN = process.env.token;
-
+var GITHUB_OWNER = process.argv[2];
+var GITHUB_REPO = process.argv[3];
 
 
 function getRepoContributors(repoOwner, repoName, cb) {
@@ -14,7 +17,7 @@ function getRepoContributors(repoOwner, repoName, cb) {
   var options = {
     url: requestURL,
     headers: {
-      'User-Agent' : 'requestqwer'
+      'User-Agent' : 'LH USER'
     }
   }
   request.get(options, function(error, response, body){
@@ -37,10 +40,14 @@ function downloadImageByURL(url, filePath) {
        })
        .pipe(fs.createWriteStream(filePath));
 }
+if(process.argv.length === 4){
+  getRepoContributors(GITHUB_OWNER, GITHUB_REPO, function(info) {
+    for(var x of info){
+      downloadImageByURL(x.avatar_url, x.login);
+    }
+  });
+}else{
+  console.log("Please enter 2 valid arguments to pass through: <GITHUB_OWNER> <GITHUB_REPO>");
+}
 
-getRepoContributors("jquery", "jquery", function(info) {
-  for(var x of info){
-    downloadImageByURL(x.avatar_url, x.login);
-  }
-});
 
